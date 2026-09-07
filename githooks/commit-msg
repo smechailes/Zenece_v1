@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+message_file="$1"
+message=$(sed -n '/^[^#]/p' "$message_file" | head -n 1)
+pattern='^(feat|fix|refactor|perf|docs|test|build|ci|chore|revert)(\([a-z0-9._/-]+\))?(!)?: .+'
+
+if [[ ! "$message" =~ $pattern ]]; then
+  printf 'Commit rejected: use Conventional Commits, for example:\n'
+  printf '  feat(portfolio): add project filter\n'
+  printf '  fix(template): correct mobile spacing\n'
+  exit 1
+fi
