@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZenEce Investment Holdings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#111111;
+  --white:#FFFFFF;
+  --grey1:#5B5B5B;
+  --grey2:#8E8E8C;
+  --line:#E3E2DE;
+  --surface:#F6F5F1;
+  --surface-2:#EFEDE6;
+  --accent:#AD8433;
+  --accent-dim:#7C5F26;
+  --head:'Archivo', Arial, sans-serif;
+  --body:'Inter', -apple-system, sans-serif;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+body{ margin:0; background:var(--white); color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased;}
+h1,h2,h3,h4{ font-family:var(--head); margin:0; font-weight:700; letter-spacing:-0.015em; color:var(--ink); }
+p{ margin:0; }
+a{ color:inherit; text-decoration:none; }
+::selection{ background:var(--ink); color:var(--white); }
+:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+.container{ max-width:1240px; margin:0 auto; padding:0 44px; }
+@media(max-width:720px){ .container{ padding:0 22px; } }
+.eyebrow{ font-size:13px; color:var(--grey2); font-weight:500; }
+.link-u{ border-bottom:1px solid var(--ink); padding-bottom:2px; font-size:14px; font-weight:500; transition:opacity .15s ease; }
+.link-u:hover{ opacity:0.55; }
+
+/* ---------------- NAV ---------------- */
+.nav{ position:fixed; top:0; left:0; right:0; z-index:80; background:rgba(255,255,255,0.94); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+.nav-row{ display:flex; align-items:center; justify-content:space-between; padding:20px 0; }
+.logo{ font-family:var(--head); font-weight:800; font-size:19px; letter-spacing:-0.02em; }
+.nav-links{ display:none; gap:34px; align-items:center; }
+@media(min-width:940px){ .nav-links{ display:flex; } }
+.nav-links a{ font-size:14.5px; font-weight:500; color:var(--grey1); transition:color .15s ease; }
+.nav-links a:hover{ color:var(--ink); }
+.nav-right{ display:flex; align-items:center; gap:20px; }
+.nav-login{ font-size:14px; color:var(--grey1); display:none; }
+@media(min-width:940px){ .nav-login{ display:inline; } }
+.nav-cta{ background:var(--ink); color:var(--white); font-size:13.5px; font-weight:600; padding:11px 20px; }
+.nav-cta:hover{ background:var(--accent); }
+.menu-btn{ display:flex; font-size:14px; font-weight:600; background:none; border:1px solid var(--line); padding:9px 14px; cursor:pointer; }
+@media(min-width:940px){ .menu-btn{ display:none; } }
+
+/* ---------------- HERO ---------------- */
+.hero{ padding:168px 0 0; }
+.hero h1{ font-size:clamp(38px,6vw,78px); line-height:1.02; max-width:15ch; }
+.hero-sub{ font-size:19px; color:var(--grey1); max-width:46ch; margin-top:26px; }
+.hero-meta{ font-size:13.5px; color:var(--grey2); margin-top:18px; }
+.hero-actions{ display:flex; gap:16px; margin-top:36px; flex-wrap:wrap; }
+.btn-dark{ background:var(--ink); color:var(--white); padding:15px 26px; font-size:14px; font-weight:600; transition:background .15s ease; }
+.btn-dark:hover{ background:var(--accent); }
+.btn-line{ border:1px solid var(--ink); padding:15px 26px; font-size:14px; font-weight:600; transition:all .15s ease; }
+.btn-line:hover{ background:var(--ink); color:var(--white); }
+
+/* leadership strip */
+.lead-strip{ margin-top:80px; border-top:1px solid var(--line); }
+.lead-scroll{ display:flex; overflow-x:auto; scrollbar-width:none; }
+.lead-scroll::-webkit-scrollbar{ display:none; }
+.lead-card{ min-width:230px; flex:0 0 auto; border-right:1px solid var(--line); padding:28px 26px; cursor:default; }
+.lead-photo{ width:100%; aspect-ratio:3/3.6; margin-bottom:18px; position:relative; overflow:hidden; background:linear-gradient(160deg,#1a1a1a 0%,#3a3a3a 55%,#8c7a52 100%); filter:grayscale(0.35);}
+.lead-photo span{ position:absolute; bottom:12px; left:14px; font-family:var(--head); font-size:38px; font-weight:800; color:rgba(255,255,255,0.9); }
+.lead-card b{ display:block; font-family:var(--head); font-size:16.5px; font-weight:700; }
+.lead-card small{ display:block; font-size:12.5px; color:var(--grey2); margin-top:6px; line-height:1.4; }
+
+/* ---------------- GLANCE ---------------- */
+.glance{ background:var(--ink); color:var(--white); padding:80px 0; }
+.glance-head{ display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:48px; flex-wrap:wrap; gap:16px; }
+.glance-head h2{ color:var(--white); font-size:clamp(24px,3vw,32px); }
+.glance-head span{ color:rgba(255,255,255,0.5); font-size:13.5px; }
+.glance-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:rgba(255,255,255,0.14); border-top:1px solid rgba(255,255,255,0.14); border-bottom:1px solid rgba(255,255,255,0.14); }
+@media(max-width:760px){ .glance-row{ grid-template-columns:1fr 1fr; } }
+.glance-cell{ background:var(--ink); padding:34px 26px; }
+.glance-cell b{ display:block; font-family:var(--head); font-size:clamp(30px,4vw,44px); font-weight:800; }
+.glance-cell span{ font-size:13px; color:rgba(255,255,255,0.55); display:block; margin-top:8px; }
+.glance-fine{ font-size:11.5px; color:rgba(255,255,255,0.4); margin-top:20px; }
+
+/* ---------------- PORTFOLIO ---------------- */
+.sect{ padding:100px 0; border-bottom:1px solid var(--line); }
+@media(max-width:720px){ .sect{ padding:64px 0; } }
+.sect-head{ display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:48px; gap:20px; flex-wrap:wrap; }
+.sect-head h2{ font-size:clamp(26px,3.2vw,38px); max-width:16ch; }
+.sect-head p{ font-size:15.5px; color:var(--grey1); max-width:36ch; }
+.filter-row{ display:flex; gap:10px; margin-bottom:36px; flex-wrap:wrap; }
+.f-btn{ font-family:var(--body); font-size:13.5px; font-weight:500; padding:9px 16px; border:1px solid var(--line); background:none; cursor:pointer; color:var(--grey1); }
+.f-btn.active{ background:var(--ink); color:var(--white); border-color:var(--ink); }
+.p-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+@media(max-width:900px){ .p-grid{ grid-template-columns:1fr 1fr; } }
+@media(max-width:600px){ .p-grid{ grid-template-columns:1fr; } }
+.p-card{ background:var(--white); padding:34px 28px; display:flex; flex-direction:column; gap:16px; min-height:230px; transition:background .2s ease, color .2s ease; }
+.p-card:hover{ background:var(--ink); color:var(--white); }
+.p-card .tag{ font-size:12px; color:var(--grey2); }
+.p-card:hover .tag{ color:rgba(255,255,255,0.55); }
+.p-card h4{ font-size:19px; }
+.p-card p.line{ font-size:14px; color:var(--grey1); }
+.p-card:hover p.line, .p-card:hover h4{ color:var(--white); }
+.p-card .learn{ margin-top:auto; font-size:13.5px; font-weight:600; border-bottom:1px solid currentColor; align-self:flex-start; padding-bottom:2px; }
+
+/* ---------------- APPROACH ---------------- */
+.approach-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid var(--line); }
+@media(max-width:760px){ .approach-grid{ grid-template-columns:1fr; } }
+.a-step{ padding:36px 30px; border-right:1px solid var(--line); }
+.a-step:last-child{ border-right:none; }
+@media(max-width:760px){ .a-step{ border-right:none; border-bottom:1px solid var(--line); } .a-step:last-child{ border-bottom:none; } }
+.a-step .idx{ font-family:var(--head); font-size:13px; color:var(--accent); font-weight:700; }
+.a-step h4{ font-size:20px; margin:14px 0 10px; }
+.a-step p{ font-size:14.5px; color:var(--grey1); }
+.fee-line{ display:flex; align-items:center; justify-content:space-between; padding:22px 0; border-bottom:1px solid var(--line); }
+.fee-line:first-child{ border-top:1px solid var(--line); }
+.fee-line .k{ font-size:15px; color:var(--grey1); }
+.fee-line .v{ font-family:var(--head); font-size:17px; font-weight:700; }
+.fee-line .v.big{ color:var(--accent); }
+
+/* ---------------- UPDATES ---------------- */
+.upd-list{ display:flex; flex-direction:column; }
+.upd-item{ display:grid; grid-template-columns:140px 1fr auto; gap:24px; align-items:center; padding:26px 0; border-bottom:1px solid var(--line); }
+.upd-item:first-child{ border-top:1px solid var(--line); }
+@media(max-width:700px){ .upd-item{ grid-template-columns:1fr; gap:8px; } }
+.upd-date{ font-size:13px; color:var(--grey2); }
+.upd-mid .tag{ font-size:12px; color:var(--accent-dim); font-weight:600; margin-bottom:6px; display:block; }
+.upd-mid h4{ font-size:18px; font-weight:600; max-width:52ch; }
+.upd-item .learn{ font-size:13.5px; font-weight:600; border-bottom:1px solid var(--ink); padding-bottom:2px; white-space:nowrap; }
+
+/* ---------------- TEAM ---------------- */
+.team-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+@media(max-width:800px){ .team-grid{ grid-template-columns:1fr; } }
+.t-card{ background:var(--white); padding:0; }
+.t-photo{ aspect-ratio:4/3; background:linear-gradient(150deg,#161616,#4a4a4a 60%,#a3854f); position:relative; }
+.t-photo span{ position:absolute; bottom:14px; left:16px; font-family:var(--head); font-size:32px; font-weight:800; color:rgba(255,255,255,0.92); }
+.t-body{ padding:26px 24px; }
+.t-body b{ font-family:var(--head); font-size:18px; display:block; }
+.t-body .role{ font-size:12.5px; color:var(--accent-dim); font-weight:600; margin:8px 0 12px; }
+.t-body p{ font-size:14px; color:var(--grey1); }
+
+/* ---------------- CONTACT ---------------- */
+.contact{ background:var(--surface); }
+.contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:70px; }
+@media(max-width:840px){ .contact-grid{ grid-template-columns:1fr; gap:40px; } }
+.c-block{ margin-bottom:30px; }
+.c-block .lbl{ font-size:12.5px; color:var(--grey2); margin-bottom:8px; display:block; }
+.c-block .val{ font-size:16px; font-weight:500; }
+.office-card{ border:1px solid var(--line); padding:26px; margin-top:10px; }
+.office-card b{ font-family:var(--head); font-size:16px; display:block; margin-bottom:8px; }
+.office-card p{ font-size:14px; color:var(--grey1); line-height:1.6; }
+.form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.fld{ display:flex; flex-direction:column; gap:6px; margin-bottom:14px; grid-column: span 2; }
+.fld.half{ grid-column: span 1; }
+.fld label{ font-size:12.5px; color:var(--grey2); }
+.fld input, .fld textarea, .fld select{ font-family:var(--body); font-size:14.5px; padding:12px 14px; border:1px solid var(--line); background:var(--white); }
+.fld textarea{ min-height:100px; resize:vertical; }
+.submit-btn{ background:var(--ink); color:var(--white); font-size:14px; font-weight:600; padding:14px 28px; border:none; cursor:pointer; margin-top:6px; }
+.submit-btn:hover{ background:var(--accent); }
+.form-note{ font-size:12px; color:var(--grey2); margin-top:14px; }
+
+/* ---------------- FOOTER ---------------- */
+.footer{ background:var(--ink); color:rgba(255,255,255,0.6); padding:56px 0 30px; }
+.footer-top{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:30px; padding-bottom:36px; border-bottom:1px solid rgba(255,255,255,0.14); margin-bottom:26px;}
+.footer-logo{ font-family:var(--head); font-weight:800; font-size:19px; color:var(--white); }
+.footer-cols{ display:flex; gap:60px; flex-wrap:wrap; }
+.footer-col b{ display:block; color:rgba(255,255,255,0.9); font-size:13px; margin-bottom:14px; font-weight:600;}
+.footer-col a{ display:block; font-size:13.5px; margin-bottom:10px; color:rgba(255,255,255,0.55); transition:color .15s ease; }
+.footer-col a:hover{ color:var(--white); }
+.footer-bottom{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:12px; }
+
+.reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease; }
+.reveal.in{ opacity:1; transform:none; }
+.count{ font-variant-numeric:tabular-nums; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-row">
+    <a class="logo" href="#top">ZenEce</a>
+    <div class="nav-links">
+      <a href="#portfolio">Portfolio</a>
+      <a href="#approach">Approach</a>
+      <a href="#team">Team</a>
+      <a href="#updates">Updates</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="nav-right">
+      <a class="nav-login" href="#contact">Investor Login</a>
+      <a class="nav-cta" href="#contact">Request Access</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="top">
+  <div class="container">
+    <p class="eyebrow">Confidential · For qualified investors only</p>
+    <h1 style="margin-top:18px;">Capital keeps redefining Nepal's private markets.</h1>
+    <p class="hero-sub">Welcome to ZenEce — Nepal's first perpetual, fee-free investment vehicle built to buy in before companies list, and hand the upside back to shareholders.</p>
+    <p class="hero-meta">A NPR 100 Cr fund · Kathmandu · Founded 2026</p>
+    <div class="hero-actions">
+      <a class="btn-dark" href="#contact">Request access</a>
+      <a class="btn-line" href="#approach">How it works</a>
+    </div>
+  </div>
+
+  <div class="lead-strip">
+    <div class="lead-scroll" id="leadScroll">
+      <div class="lead-card"><div class="lead-photo"><span>VK</span></div><b>Virochan Khanal</b><small>FCA · Founder &amp; Managing Director. 15+ years in corporate finance and capital raising; Chairperson, Miyo Securities.</small></div>
+      <div class="lead-card"><div class="lead-photo"><span>SP</span></div><b>Sanjay Pokhrel</b><small>CFA, CA · Founder &amp; Director. Founder, Garima Capital. US$200Mn+ M&amp;A closed.</small></div>
+      <div class="lead-card"><div class="lead-photo"><span>US</span></div><b>Ujjwal Shahi</b><small>FCA · Founder, Finance &amp; Governance. PwC-trained; 15+ years across finance, tax and audit.</small></div>
+      <div class="lead-card"><div class="lead-photo"><span>NPR</span></div><b>100 Cr</b><small>Total fund size, phased across three rounds of issuance at par.</small></div>
+      <div class="lead-card"><div class="lead-photo"><span>0%</span></div><b>Fees &amp; carry</b><small>No management fee, no carried interest. Shareholders keep 100% of profit.</small></div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= AT A GLANCE ================= -->
+<section class="glance" id="glance">
+  <div class="container">
+    <div class="glance-head reveal">
+      <h2>At a glance</h2>
+      <span>As stated in the August 2026 offering materials</span>
+    </div>
+    <div class="glance-row reveal">
+      <div class="glance-cell"><b><span class="count" data-target="100" data-suffix=" Cr">0</span></b><span>NPR total fund size</span></div>
+      <div class="glance-cell"><b><span class="count" data-target="4" data-suffix="">0</span></b><span>deals already funded</span></div>
+      <div class="glance-cell"><b><span class="count" data-target="20" data-suffix="%">0</span></b><span>target yearly return, base case</span></div>
+      <div class="glance-cell"><b><span class="count" data-target="0" data-suffix="%">0</span></b><span>fees &amp; carry, always</span></div>
+    </div>
+    <p class="glance-fine">Base case over a 10-year cycle. 30+ deals evaluated for the pipeline. Targets, not guarantees — see stress test in the approach section.</p>
+  </div>
+</section>
+
+<!-- ================= PORTFOLIO ================= -->
+<section class="sect" id="portfolio">
+  <div class="container">
+    <div class="sect-head reveal">
+      <h2>Companies we back</h2>
+      <p>Four assets already funded and being prepared for a public listing; a further pipeline of 30+ opportunities under evaluation.</p>
+    </div>
+    <div class="filter-row">
+      <button class="f-btn active" data-f="all">All companies</button>
+      <button class="f-btn" data-f="funded">Funded</button>
+      <button class="f-btn" data-f="pipeline">Pipeline</button>
+    </div>
+    <div class="p-grid" id="pGrid">
+      <div class="p-card" data-cat="funded"><span class="tag">Agri-processing · IPO-track</span><h4>Sugar Mill Project</h4><p class="line">Import substitution, one crush cycle at a time. NPR 170 Cr, 85% complete, COD Dec 2026.</p><span class="learn">Learn more</span></div>
+      <div class="p-card" data-cat="funded"><span class="tag">Hydropower · IPO-track</span><h4>21MW Run-of-River</h4><p class="line">Thirty years of power, financially closed. NPR 367.5 Cr, 30-yr PPA with NEA.</p><span class="learn">Learn more</span></div>
+      <div class="p-card" data-cat="funded"><span class="tag">Hydropower · IPO-eligible</span><h4>3MW + 3.7MW Survey</h4><p class="line">Generating today, listing tomorrow. NPR 15 Cr/MW — 62% below build cost.</p><span class="learn">Learn more</span></div>
+      <div class="p-card" data-cat="pipeline"><span class="tag">Healthcare · IPO-track</span><h4>Multispecialty Hospital</h4><p class="line">Three hundred beds, one clear listing path. NPR 1,191 Cr, JCI accreditation target.</p><span class="learn">Learn more</span></div>
+      <div class="p-card" data-cat="pipeline"><span class="tag">Healthcare &amp; Education · FY 87/88</span><h4>Teaching Hospital &amp; Cancer Institute</h4><p class="line">Nineteen years of care, built for scale. 750 beds plus an integrated medical college.</p><span class="learn">Learn more</span></div>
+      <div class="p-card" data-cat="pipeline"><span class="tag">Telecom · Target 2027</span><h4>Broadband / FTTH Operator</h4><p class="line">The infrastructure under Nepal's internet. ~485K subscribers, #2 post-merger.</p><span class="learn">Learn more</span></div>
+      <div class="p-card" data-cat="pipeline"><span class="tag">Hospitality · IPO filed</span><h4>Branded Hospitality Asset</h4><p class="line">An international brand, a Nepali address. Operating asset, SEBON process underway.</p><span class="learn">Learn more</span></div>
+      <div class="p-card" data-cat="pipeline"><span class="tag">Beverage · IPO-track</span><h4>Wine &amp; Beverage Group</h4><p class="line">Integrated producer and distributor, expanding into wine tourism.</p><span class="learn">Learn more</span></div>
+      <div class="p-card" data-cat="pipeline"><span class="tag">Retail · IPO-track</span><h4>Homegrown Retail Brand</h4><p class="line">A denim-first lifestyle brand, operating and under evaluation.</p><span class="learn">Learn more</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= APPROACH ================= -->
+<section class="sect" id="approach">
+  <div class="container">
+    <div class="sect-head reveal">
+      <h2>A simple three-step playbook</h2>
+      <p>Buy in early, make the company list-ready, then cash out — repeatedly, with no fee standing between shareholders and the return.</p>
+    </div>
+    <div class="approach-grid reveal">
+      <div class="a-step"><span class="idx">01</span><h4>Buy in early</h4><p>Take equity stakes in profitable companies, typically 3–5 years before they list, at a low price.</p></div>
+      <div class="a-step"><span class="idx">02</span><h4>Make it list-ready</h4><p>In-house audit, advisory and merchant-banking teams prepare the company for a clean public listing.</p></div>
+      <div class="a-step"><span class="idx">03</span><h4>Cash out</h4><p>Exit via IPO or secondary sale, then redeploy into the next opportunity in the pipeline.</p></div>
+    </div>
+
+    <div style="margin-top:60px; display:grid; grid-template-columns:1fr 1fr; gap:60px;" class="reveal">
+      <div>
+        <h4 style="font-size:20px; margin-bottom:6px;">Where the fee typically goes</h4>
+        <p style="font-size:14px; color:var(--grey1); margin-bottom:4px;">A typical fund takes 2% a year, plus 20% of profit. ZenEce takes neither.</p>
+        <div class="fee-line"><span class="k">Management fee</span><span class="v">None</span></div>
+        <div class="fee-line"><span class="k">Carried interest</span><span class="v">None</span></div>
+        <div class="fee-line"><span class="k">Profit to shareholders</span><span class="v big">100%, pro-rata</span></div>
+      </div>
+      <div>
+        <h4 style="font-size:20px; margin-bottom:6px;">Three scenarios, ten-year cycle</h4>
+        <p style="font-size:14px; color:var(--grey1); margin-bottom:4px;">Even the cautious case returns a profit on a total-value basis.</p>
+        <div class="fee-line"><span class="k">Cautious</span><span class="v">7% / yr · 1.8× money back</span></div>
+        <div class="fee-line"><span class="k">Base case</span><span class="v big">~20% / yr · ~4.0× money back</span></div>
+        <div class="fee-line"><span class="k">Strong</span><span class="v">30% / yr · 7.0× money back</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= UPDATES ================= -->
+<section class="sect" id="updates">
+  <div class="container">
+    <div class="sect-head reveal">
+      <h2>Recent updates</h2>
+      <p>Traction from the current raise and the active pipeline.</p>
+    </div>
+    <div class="upd-list reveal">
+      <div class="upd-item"><span class="upd-date">August 2026</span><div class="upd-mid"><span class="tag">Fundraising</span><h4>Capital underway: NPR 75 Cr raise live, founders committed NPR 15 Cr</h4></div><a class="learn" href="#contact">Learn more</a></div>
+      <div class="upd-item"><span class="upd-date">August 2026</span><div class="upd-mid"><span class="tag">Portfolio</span><h4>Financial closure completed for the 21MW hydropower project, 30-yr PPA secured</h4></div><a class="learn" href="#portfolio">Learn more</a></div>
+      <div class="upd-item"><span class="upd-date">August 2026</span><div class="upd-mid"><span class="tag">Pipeline</span><h4>Multispecialty hospital, NPR 1,191 Cr, enters its equity raise stage</h4></div><a class="learn" href="#portfolio">Learn more</a></div>
+      <div class="upd-item"><span class="upd-date">August 2026</span><div class="upd-mid"><span class="tag">Portfolio</span><h4>Sugar mill project reaches 85% completion ahead of December 2026 COD</h4></div><a class="learn" href="#portfolio">Learn more</a></div>
+      <div class="upd-item"><span class="upd-date">August 2026</span><div class="upd-mid"><span class="tag">Company</span><h4>Team forming: three founders in place, analysts and managers onboarded</h4></div><a class="learn" href="#team">Learn more</a></div>
+      <div class="upd-item"><span class="upd-date">August 2026</span><div class="upd-mid"><span class="tag">Pipeline</span><h4>Branded hospitality asset files for listing with SEBON</h4></div><a class="learn" href="#portfolio">Learn more</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TEAM ================= -->
+<section class="sect" id="team">
+  <div class="container">
+    <div class="sect-head reveal">
+      <h2>Experienced founders</h2>
+      <p>Deep roots in Nepal's capital markets, regulatory landscape and cross-border advisory — 45+ years combined.</p>
+    </div>
+    <div class="team-grid reveal">
+      <div class="t-card"><div class="t-photo"><span>VK</span></div><div class="t-body"><b>Virochan Khanal</b><span class="role">FCA · Founder &amp; Managing Director</span><p>15+ years in corporate finance, project financing and capital raising. Chairperson, Miyo Securities.</p></div></div>
+      <div class="t-card"><div class="t-photo"><span>SP</span></div><div class="t-body"><b>Sanjay Pokhrel</b><span class="role">CFA, CA · Founder &amp; Director</span><p>Founder &amp; Director, Garima Capital. US$200Mn+ M&amp;A closed; deal advisory and M&amp;A expert.</p></div></div>
+      <div class="t-card"><div class="t-photo"><span>US</span></div><div class="t-body"><b>Ujjwal Shahi</b><span class="role">FCA · Founder, Finance &amp; Governance</span><p>PwC-trained; 15+ years across corporate finance, taxation, investment strategy and audit.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="sect contact" id="contact">
+  <div class="container">
+    <div class="sect-head reveal">
+      <h2>Get in touch</h2>
+      <p>For qualified investors, advisory mandates, and press enquiries.</p>
+    </div>
+    <div class="contact-grid reveal">
+      <div>
+        <div class="c-block"><span class="lbl">Email</span><a class="val link-u" href="mailto:zeneceinvestmentholdings@gmail.com">zeneceinvestmentholdings@gmail.com</a></div>
+        <div class="c-block"><span class="lbl">Web</span><span class="val">www.zeneceinvestmentholding.com</span></div>
+        <div class="office-card">
+          <b>Kathmandu</b>
+          <p>ZenEce Investment Holdings<br>Kathmandu, Nepal</p>
+        </div>
+      </div>
+      <form id="contactForm">
+        <div class="form-grid">
+          <div class="fld half"><label>First name *</label><input type="text" required></div>
+          <div class="fld half"><label>Last name *</label><input type="text" required></div>
+          <div class="fld half"><label>Email *</label><input type="email" required></div>
+          <div class="fld half"><label>Phone number</label><input type="tel"></div>
+          <div class="fld"><label>Area of interest *</label>
+            <select required>
+              <option value="">Select one</option>
+              <option>Investing in the current round</option>
+              <option>Advisory mandate</option>
+              <option>Press &amp; media</option>
+              <option>General enquiry</option>
+            </select>
+          </div>
+          <div class="fld"><label>Message *</label><textarea required></textarea></div>
+        </div>
+        <button class="submit-btn" type="submit">Submit</button>
+        <p class="form-note" id="formNote">By submitting, you confirm you are contacting ZenEce as a qualified investor or professional enquiry.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <a class="footer-logo" href="#top">ZenEce</a>
+      <div class="footer-cols">
+        <div class="footer-col"><b>Company</b>
+          <a href="#portfolio">Portfolio</a>
+          <a href="#approach">Approach</a>
+          <a href="#team">Team</a>
+        </div>
+        <div class="footer-col"><b>Resources</b>
+          <a href="#updates">Updates</a>
+          <a href="#contact">Contact</a>
+          <a href="mailto:zeneceinvestmentholdings@gmail.com">Investor login</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 ZenEce Investment Holdings, Kathmandu.</span>
+      <span>Confidential · For qualified investors only.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// reveal on scroll
+const rev = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); }), {threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el => rev.observe(el));
+
+// count up stats
+const counted = new Set();
+const countObs = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if(e.isIntersecting && !counted.has(e.target)){
+      counted.add(e.target);
+      document.querySelectorAll('.count').forEach(el => {
+        const target = parseFloat(el.dataset.target);
+        const suffix = el.dataset.suffix || '';
+        const dur = 1200, start = performance.now();
+        function step(now){
+          const p = Math.min(1, (now-start)/dur);
+          const eased = 1 - Math.pow(1-p, 3);
+          el.textContent = Math.round(target*eased) + suffix;
+          if(p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      });
+    }
+  });
+}, {threshold:0.4});
+const glanceEl = document.getElementById('glance');
+if(glanceEl) countObs.observe(glanceEl);
+
+// portfolio filter
+document.querySelectorAll('.f-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.f;
+    document.querySelectorAll('.p-card').forEach(c => {
+      c.style.display = (f==='all' || c.dataset.cat===f) ? '' : 'none';
+    });
+  });
+});
+
+// contact form (visual only)
+const form = document.getElementById('contactForm');
+if(form){
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    document.getElementById('formNote').textContent = "Thank you — your enquiry has been noted. ZenEce will follow up by email.";
+  });
+}
+</script>
+</body>
+</html>
