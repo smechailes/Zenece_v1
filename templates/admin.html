@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZenEce Site Configuration</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+<main class="admin-shell">
+  <header class="admin-header">
+    <div>
+      <p class="eyebrow">ZenEce / administration</p>
+      <h1>Site configuration</h1>
+      <p>Control the public theme, navigation, and hero content from one place.</p>
+    </div>
+    <a href="{{ url_for('home') }}">View site</a>
+  </header>
+
+  <div class="admin-status" id="adminStatus" role="status" aria-live="polite"></div>
+
+  <form id="settingsForm">
+    <section class="settings-panel lazy-panel" data-category="theme">
+      <div class="panel-heading"><span>01</span><h2>Global theme</h2></div>
+      <div class="field-grid">
+        <label>Primary accent <input type="color" name="theme.primary_color" data-type="color"></label>
+        <label>Background <input type="color" name="theme.background_color" data-type="color"></label>
+        <label>Surface <input type="color" name="theme.surface_color" data-type="color"></label>
+      </div>
+    </section>
+
+    <section class="settings-panel lazy-panel" data-category="navbar">
+      <div class="panel-heading"><span>02</span><h2>Navigation</h2></div>
+      <div class="field-grid">
+        <label>Navbar title <input type="text" name="navbar.title" data-type="string"></label>
+        <label class="toggle-field">Show navbar <input type="checkbox" name="navbar.visible" data-type="boolean"></label>
+      </div>
+    </section>
+
+    <section class="settings-panel lazy-panel" data-category="hero">
+      <div class="panel-heading"><span>03</span><h2>Hero content</h2></div>
+      <label>Headline <textarea name="hero.title" data-type="string" rows="3"></textarea></label>
+      <label>Description <textarea name="hero.description" data-type="string" rows="4"></textarea></label>
+    </section>
+
+    <div class="admin-actions">
+      <label class="token-field">Admin token <input id="adminToken" type="password" autocomplete="off" required></label>
+      <button type="submit">Save changes</button>
+    </div>
+  </form>
+</main>
+<script src="{{ url_for('static', filename='js/routing.js') }}"></script>
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>

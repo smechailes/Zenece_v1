@@ -1,0 +1,35 @@
+:root{
+  --ink:#17221f;
+  --muted:#65706a;
+  --surface:#f4f0e8;
+  --panel:#fffdf7;
+  --accent:#d76b3f;
+  --line:#d6cdbd;
+  --serif:'Spectral',Georgia,serif;
+  --sans:'IBM Plex Sans',Arial,sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--surface);color:var(--ink);font:16px/1.5 var(--sans);}
+.admin-shell{max-width:960px;margin:0 auto;padding:60px 28px 100px;}
+.admin-header{display:flex;justify-content:space-between;gap:28px;align-items:end;margin-bottom:38px;}
+.admin-header h1{font:600 clamp(36px,6vw,64px)/1 var(--serif);margin:8px 0 14px;}
+.admin-header p{color:var(--muted);margin:0;max-width:58ch;}
+.admin-header a,.admin-actions button{background:var(--ink);color:#fff;padding:12px 18px;border-radius:999px;text-decoration:none;border:0;cursor:pointer;font:12px var(--mono);white-space:nowrap;}
+.eyebrow,.panel-heading span{font:11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent);}
+.admin-status{min-height:24px;color:var(--muted);font:13px var(--mono);margin-bottom:14px;}
+.settings-panel{background:var(--panel);border:1px solid var(--line);padding:28px;margin:14px 0;box-shadow:0 14px 32px rgba(23,34,31,.07);}
+.panel-heading{display:flex;gap:14px;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:22px;}
+.panel-heading h2{font:600 28px var(--serif);margin:0;}
+.field-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+label{display:grid;gap:8px;color:var(--muted);font-size:13px;}
+input[type=text],input[type=password],textarea{width:100%;border:1px solid var(--line);background:#fff;color:var(--ink);padding:11px 12px;font:14px var(--sans);border-radius:3px;}
+input[type=color]{width:100%;height:44px;border:1px solid var(--line);padding:3px;background:#fff;cursor:pointer;}
+textarea{resize:vertical;min-height:90px;}
+.settings-panel>label{margin-top:18px;}
+.toggle-field{display:flex;grid-template-columns:auto;align-items:center;gap:10px;}
+.toggle-field input{width:18px;height:18px;accent-color:var(--accent);}
+.admin-actions{display:flex;justify-content:flex-end;align-items:end;gap:16px;margin-top:28px;}
+.token-field{max-width:300px;flex:1;}
+.admin-actions button{background:var(--accent);}
+@media(max-width:680px){.admin-shell{padding:36px 18px 70px;}.admin-header{display:block;}.admin-header a{display:inline-block;margin-top:20px;}.field-grid{grid-template-columns:1fr;}.admin-actions{display:block;}.token-field{max-width:none;margin-bottom:14px;}.admin-actions button{width:100%;}}
