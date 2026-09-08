@@ -61,3 +61,23 @@ form.addEventListener('submit', async event => {
   loadedConfig = result.config;
   setStatus(`${result.updated.length} settings saved.`);
 });
+
+document.getElementById('navForm').addEventListener('submit', async event => {
+  event.preventDefault();
+  const links = Array.from(document.querySelectorAll('.nav-row')).map(row => ({
+    id: Number(row.dataset.id),
+    title: row.querySelector('[name="title"]').value,
+    url: row.querySelector('[name="url"]').value,
+    is_visible: row.querySelector('[name="is_visible"]').checked
+  }));
+  const response = await fetch('/admin/nav', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Admin-Token': document.getElementById('adminToken').value
+    },
+    body: JSON.stringify({links})
+  });
+  const result = await response.json();
+  setStatus(response.ok ? 'Navigation saved.' : (result.error || 'Could not save navigation.'), !response.ok);
+});

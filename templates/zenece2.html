@@ -3,23 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ zenece2_data.brand }} | Private Market Investment</title>
+  <title>{{ site_settings.get('site_title', zenece2_data.brand) }} | Private Market Investment</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/zenece2.css') }}">
 </head>
-<body>
+<body style="--gold:{{ site_settings.get('primary_color', '#d8b978') }};--bg:{{ site_settings.get('background_color', '#0b1020') }};--surface:{{ site_settings.get('surface_color', '#131d31') }};">
   <header class="z2-topbar">
     <div class="container z2-nav-shell">
       <div class="brand-wrap">
         <div class="brand-mark">Z</div>
-        <span>{{ zenece2_data.brand }}</span>
+        <span>{{ site_settings.get('site_title', zenece2_data.brand) }}</span>
       </div>
 
       <nav class="z2-nav" aria-label="Main navigation">
-        {% for link in zenece2_data.nav_links %}
-          <a href="{{ link.href }}" {% if loop.first %}class="active"{% endif %}>{{ link.label }}</a>
+        {% for link in nav_links %}
+          <a href="{{ link.url }}" {% if loop.first %}class="active"{% endif %}>{{ link.title }}</a>
         {% endfor %}
       </nav>
 

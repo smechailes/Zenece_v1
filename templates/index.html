@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{ page.title }}</title>
+<title>{{ site_settings.get('site_title', page.title) }}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}">
 </head>
-<body class="redesign" data-theme="midnight">
+<body class="redesign" data-theme="midnight" style="--gold:{{ site_settings.get('primary_color', '#B08A3E') }};--navy:{{ site_settings.get('background_color', '#0B1B33') }};--navy-2:{{ site_settings.get('surface_color', '#132A4C') }};">
 
 <div class="topbar">
   <a class="brand" href="#hero">
     <span class="brand-mark">Z</span>
-    <span class="brand-name">{{ page.brand }}</span>
+    <span class="brand-name">{{ site_settings.get('site_title', page.brand) }}</span>
     <span class="brand-tag"></span>
   </a>
   <div class="topbar-actions">

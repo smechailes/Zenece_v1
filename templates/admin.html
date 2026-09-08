@@ -23,16 +23,17 @@
     <section class="settings-panel lazy-panel" data-category="theme">
       <div class="panel-heading"><span>01</span><h2>Global theme</h2></div>
       <div class="field-grid">
-        <label>Primary accent <input type="color" name="theme.primary_color" data-type="color"></label>
-        <label>Background <input type="color" name="theme.background_color" data-type="color"></label>
-        <label>Surface <input type="color" name="theme.surface_color" data-type="color"></label>
+        <label>Primary accent <input type="color" name="primary_color" data-type="color" value="{{ site_settings.get('primary_color', '#D4AF37') }}"></label>
+        <label>Background <input type="color" name="background_color" data-type="color" value="{{ site_settings.get('background_color', '#0B1B2B') }}"></label>
+        <label>Surface <input type="color" name="surface_color" data-type="color" value="{{ site_settings.get('surface_color', '#16283D') }}"></label>
       </div>
     </section>
 
     <section class="settings-panel lazy-panel" data-category="navbar">
       <div class="panel-heading"><span>02</span><h2>Navigation</h2></div>
       <div class="field-grid">
-        <label>Navbar title <input type="text" name="navbar.title" data-type="string"></label>
+        <label>Site title <input type="text" name="site_title" data-type="string" value="{{ site_settings.get('site_title', 'ZenEce') }}"></label>
+        <label>Logo URL <input type="url" name="logo_url" data-type="string" value="{{ site_settings.get('logo_url', '') }}"></label>
         <label class="toggle-field">Show navbar <input type="checkbox" name="navbar.visible" data-type="boolean"></label>
       </div>
     </section>
@@ -48,6 +49,21 @@
       <button type="submit">Save changes</button>
     </div>
   </form>
+  <section class="settings-panel">
+    <div class="panel-heading"><span>04</span><h2>Navigation links</h2></div>
+    <form id="navForm">
+      <div id="navLinks">
+        {% for link in nav_links %}
+        <div class="nav-row" data-id="{{ link.id }}">
+          <input name="title" value="{{ link.title }}" required>
+          <input name="url" value="{{ link.url }}" required>
+          <label class="toggle-field"><input name="is_visible" type="checkbox" {% if link.is_visible %}checked{% endif %}> Visible</label>
+        </div>
+        {% endfor %}
+      </div>
+      <button type="submit">Save navigation</button>
+    </form>
+  </section>
 </main>
 <script src="{{ url_for('static', filename='js/routing.js') }}"></script>
 <script src="{{ url_for('static', filename='js/admin.js') }}"></script>

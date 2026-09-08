@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ZenEce Admin Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+<main class="admin-shell">
+  <header class="admin-header">
+    <div>
+      <p class="eyebrow">ZenEce / administration</p>
+      <h1>Sign in</h1>
+      <p>Use the configured admin account to manage the site.</p>
+    </div>
+  </header>
+  <form id="loginForm" class="settings-panel">
+    <label>Username <input name="username" autocomplete="username" required></label>
+    <label>Password <input name="password" type="password" autocomplete="current-password" required></label>
+    <p id="loginStatus" class="admin-status" role="alert"></p>
+    <button type="submit">Sign in</button>
+  </form>
+</main>
+<script>
+const form = document.getElementById('loginForm');
+const status = document.getElementById('loginStatus');
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const response = await fetch('/admin/login', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(Object.fromEntries(new FormData(form)))
+  });
+  const result = await response.json();
+  if (!response.ok) {
+    status.textContent = result.error || 'Could not sign in.';
+    return;
+  }
+  window.location.href = '/admin';
+});
+</script>
+</body>
+</html>

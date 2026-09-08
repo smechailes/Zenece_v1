@@ -1,41 +1,50 @@
 import json
 import os
-from datetime import datetime, timezone
 
-from flask import Flask, request
-from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
+from flask import Flask, jsonify, request
 
+from models import NavLink, SiteSetting, User, db
 from routing.routes import register_routes
 
 
+load_dotenv()
+
+
+def environment_bool(name, default=False):
+    value = os.environ.get(name)
+    if value is None:
+        return default
+    return value.strip().lower() in {"1", "true", "yes", "on"}
+
+
 app = Flask(__name__)
+app.config["FLASK_DEBUG"] = environment_bool("FLASK_DEBUG")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-    "DATABASE_URL", "sqlite:///site_config.db"
+    "DATABASE_URL", "sqlite:///site.db"
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["ADMIN_TOKEN"] = os.environ.get("ADMIN_TOKEN")
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 
-db = SQLAlchemy(app)
-
-
-class SiteConfig(db.Model):
-    __tablename__ = "site_config"
-
-    id = db.Column(db.Integer, primary_key=True)
-    key = db.Column(db.String(120), unique=True, nullable=False, index=True)
-    value = db.Column(db.Text, nullable=False)
-    value_type = db.Column(db.String(20), nullable=False, default="string")
-    category = db.Column(db.String(40), nullable=False, default="general")
-    is_public = db.Column(db.Boolean, nullable=False, default=True)
-    updated_at = db.Column(
-        db.DateTime(timezone=True),
-        nullable=False,
-        default=lambda: datetime.now(timezone.utc),
-        onupdate=lambda: datetime.now(timezone.utc),
+if not app.config["FLASK_DEBUG"] and (
+    not app.config["ADMIN_TOKEN"] or not app.config["SECRET_KEY"]
+):
+    raise RuntimeError(
+        "ADMIN_TOKEN and SECRET_KEY must be set when FLASK_DEBUG is disabled. "
+        "Set both values in the production environment."
     )
+
+app.secret_key = app.config["SECRET_KEY"] or "development-secret-key"
+db.init_app(app)
 
 
 DEFAULT_CONFIG = {
+    "primary_color": ("#D4AF37", "color", "theme"),
+    "background_color": ("#0B1B2B", "color", "theme"),
+    "surface_color": ("#16283D", "color", "theme"),
+    "site_title": ("ZenEce", "string", "navbar"),
+    "logo_url": ("", "string", "navbar"),
     "theme.primary_color": ("#D4AF37", "color", "theme"),
     "theme.background_color": ("#0B1B2B", "color", "theme"),
     "theme.surface_color": ("#16283D", "color", "theme"),
@@ -48,6 +57,17 @@ DEFAULT_CONFIG = {
         "hero",
     ),
 }
+
+DEFAULT_NAV_LINKS = [
+    ("Overview", "#overview"),
+    ("Portfolio", "#portfolio"),
+    ("Approach", "#approach"),
+    ("Team", "#team"),
+    ("Updates", "#updates"),
+    ("Contact", "#contact"),
+]
+
+BOOLEAN_SETTING_KEYS = {"navbar.visible"}
 
 ZENECE2_PAGE_DATA = {
     "brand": "ZenEce",
@@ -194,29 +214,52 @@ ZENECE2_PAGE_DATA = {
 }
 
 
-def serialize_config(setting):
-    value = setting.value
-    if setting.value_type == "boolean":
-        value = value.lower() == "true"
-    elif setting.value_type == "integer":
-        value = int(value)
-    elif setting.value_type == "decimal":
-        value = float(value)
-    elif setting.value_type == "json":
-        value = json.loads(value)
-    return value
+def serialize_setting(setting):
+    if setting.key in BOOLEAN_SETTING_KEYS:
+        return setting.value.lower() == "true"
+    return setting.value
 
 
 def public_config():
     return {
-        setting.key: serialize_config(setting)
-        for setting in SiteConfig.query.filter_by(is_public=True).all()
+        setting.key: serialize_setting(setting)
+        for setting in SiteSetting.query.order_by(SiteSetting.key).all()
     }
 
 
+def get_nav_links(include_hidden=False):
+    return [
+        {
+            "id": link.id,
+            "title": link.title,
+            "url": link.url,
+            "order_index": link.order_index,
+            "is_visible": link.is_visible,
+        }
+        for link in NavLink.query.order_by(NavLink.order_index, NavLink.id).all()
+        if include_hidden or link.is_visible
+    ]
+
+
 @app.context_processor
-def inject_site_config():
-    return {"site_config": public_config()}
+def inject_site_content():
+    settings = public_config()
+    return {
+        "site_settings": settings,
+        "site_config": settings,
+        "nav_links": get_nav_links(),
+    }
+
+
+@app.errorhandler(404)
+def handle_not_found(error):
+    return jsonify({"error": "Resource not found."}), 404
+
+
+@app.errorhandler(500)
+def handle_server_error(error):
+    db.session.rollback()
+    return jsonify({"error": "An unexpected server error occurred."}), 500
 
 
 def require_admin_token():
@@ -228,15 +271,24 @@ def require_admin_token():
 with app.app_context():
     db.create_all()
     for key, (value, value_type, category) in DEFAULT_CONFIG.items():
-        if SiteConfig.query.filter_by(key=key).first() is None:
+        if SiteSetting.query.filter_by(key=key).first() is None:
             db.session.add(
-                SiteConfig(
+                SiteSetting(
                     key=key,
                     value=value,
-                    value_type=value_type,
-                    category=category,
                 )
             )
+    if not NavLink.query.count():
+        for order_index, (title, url) in enumerate(DEFAULT_NAV_LINKS):
+            db.session.add(
+                NavLink(title=title, url=url, order_index=order_index, is_visible=True)
+            )
+    admin_username = os.environ.get("ADMIN_USERNAME")
+    admin_password = os.environ.get("ADMIN_PASSWORD")
+    if admin_username and admin_password and not User.query.filter_by(username=admin_username).first():
+        admin_user = User(username=admin_username)
+        admin_user.set_password(admin_password)
+        db.session.add(admin_user)
     db.session.commit()
 
 
@@ -247,24 +299,27 @@ def get_site_variant(default="default"):
     return requested
 
 
-app.config["PUBLIC_CONFIG"] = public_config
 app.config["ZENECE2_PAGE_DATA"] = ZENECE2_PAGE_DATA
-app.config["SITE_VARIANT_DEFAULT"] = "default"
 
 register_routes(
     app,
-    SiteConfig=SiteConfig,
+    SiteSetting=SiteSetting,
+    NavLink=NavLink,
+    User=User,
     db=db,
     public_config=public_config,
+    get_nav_links=get_nav_links,
     require_admin_token=require_admin_token,
     get_site_variant=get_site_variant,
     ZENECE2_PAGE_DATA=ZENECE2_PAGE_DATA,
+    allowed_config_keys=set(DEFAULT_CONFIG),
+    setting_types={key: value_type for key, (_, value_type, _) in DEFAULT_CONFIG.items()},
 )
 
 
 if __name__ == "__main__":
     app.run(
-        debug=True,
+        debug=app.config["FLASK_DEBUG"],
         host="0.0.0.0",
         port=int(os.environ.get("PORT", "5000")),
     )
